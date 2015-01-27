@@ -1,7 +1,6 @@
 ﻿using Topshelf.HostConfigurators;
-using Topshelf.WinformsHost;
 
-namespace Topshelf
+namespace Topshelf.WinformsHost
 {
     public static class HostConfiguratorExtensions
     {
