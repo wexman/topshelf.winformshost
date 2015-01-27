@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.WinformsHost", "Topshelf.WinformsHost.csproj", "{530D3AE6-62FF-46BD-89A9-CF6A2B62290E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.WinformsHost", "src\Topshelf.WinformsHost\Topshelf.WinformsHost.csproj", "{530D3AE6-62FF-46BD-89A9-CF6A2B62290E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B25811B2-D6DF-410B-A60B-C8491891A9C5}"
 	ProjectSection(SolutionItems) = preProject

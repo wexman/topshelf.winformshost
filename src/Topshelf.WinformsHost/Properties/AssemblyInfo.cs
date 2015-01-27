@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Topshelf.WinformsHost")]
 [assembly: AssemblyDescription("A Winforms RunHost for Topshelf services")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jens Weiermann")]
+[assembly: AssemblyCompany("Gustav Wilms OHG")]
 [assembly: AssemblyProduct("Topshelf.WinformsHost")]
 [assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.4.0")]
-[assembly: AssemblyFileVersion("1.0.4.0")]
+[assembly: AssemblyVersion("1.0.5.0")]
+[assembly: AssemblyFileVersion("1.0.5.0")]
