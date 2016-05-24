@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using Topshelf.Logging;
 using Topshelf.Runtime;
@@ -13,6 +14,8 @@ namespace Topshelf.WinformsHost
         private readonly ServiceHandle _serviceHandle;
 
         private readonly LogWriter _log = HostLogger.Get<WinformsRunHost>();
+
+        private int _IsRunning = 0;
 
         public WinformsRunHost(HostEnvironment environment, HostSettings settings, ServiceHandle serviceHandle)
         {
@@ -34,8 +37,6 @@ namespace Topshelf.WinformsHost
                 return TopshelfExitCode.ServiceAlreadyRunning;
             }
 
-            bool flag = false;
-
             try
             {
                 this._log.Debug("Starting up as a winforms application");
@@ -47,11 +48,11 @@ namespace Topshelf.WinformsHost
                 {
                     throw new TopshelfException("The service failed to start (return false).");
                 }
-                flag = true;
+                _IsRunning = 1;
 
                 var btn = new Button();
                 btn.Text = "Stop";
-                btn.Click += (s, e) => this.Stop();
+                btn.Click += (s, e) => Stop();
                 btn.Dock = DockStyle.Fill;
                 btn.Parent = form;
 
@@ -65,9 +66,7 @@ namespace Topshelf.WinformsHost
             }
             finally
             {
-                if(flag)
-                    this._serviceHandle.Stop(this);
-
+                Stop();
                 HostLogger.Shutdown();
             }
         }
@@ -80,14 +79,17 @@ namespace Topshelf.WinformsHost
         public void Restart()
         {
             this._log.Info("Service Restart requested, but we don't support that here, so we are exiting.");
-            Application.ExitThread();
+            this.Stop();
         }
 
         public void Stop()
         {
-            this._log.Info("Service Stop requested, exiting.");
-            _serviceHandle.Stop(this);
-
+            var running = Interlocked.Exchange(ref _IsRunning, 0);
+            if (running == 1)
+            {
+                this._log.Info("Service Stop requested, exiting.");
+                _serviceHandle.Stop(this);
+            }
             Application.ExitThread();
         }
     }
