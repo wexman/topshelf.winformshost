@@ -9,18 +9,20 @@ namespace Topshelf.WinformsHost
 {
     public class WinformsRunHost : Host, HostControl
     {
-        private readonly HostEnvironment _environment;
         private readonly HostSettings _settings;
         private readonly ServiceHandle _serviceHandle;
+        private readonly HostEnvironment _environment;
 
         private readonly LogWriter _log = HostLogger.Get<WinformsRunHost>();
 
+        private bool _Autostart;
         private int _IsRunning = 0;
 
-        public WinformsRunHost(HostEnvironment environment, HostSettings settings, ServiceHandle serviceHandle)
+        public WinformsRunHost(HostEnvironment environment, HostSettings settings, ServiceHandle serviceHandle, bool autostart)
         {
-            _environment = environment;
             _settings = settings;
+            _Autostart = autostart;
+            _environment = environment;
             _serviceHandle = serviceHandle;
         }
 
@@ -44,15 +46,25 @@ namespace Topshelf.WinformsHost
                 var form = new Form();
                 form.Text = this._settings.DisplayName;
 
-                if (!this._serviceHandle.Start(this))
-                {
-                    throw new TopshelfException("The service failed to start (return false).");
-                }
-                _IsRunning = 1;
-
                 var btn = new Button();
-                btn.Text = "Stop";
-                btn.Click += (s, e) => Stop();
+
+                if (_Autostart)
+                    Start();
+
+                btn.Click += (s, e) =>
+                {
+                    if (_IsRunning == 1)
+                    {
+                        Stop();
+                        btn.Text = "Start";
+                    }
+                    else
+                    {
+                        Start();
+                        btn.Text = "Stop";
+                    }
+                };
+                btn.Text = _IsRunning == 1 ? "Stop" : "Start";
                 btn.Dock = DockStyle.Fill;
                 btn.Parent = form;
 
@@ -80,6 +92,15 @@ namespace Topshelf.WinformsHost
         {
             this._log.Info("Service Restart requested, but we don't support that here, so we are exiting.");
             this.Stop();
+        }
+
+        private void Start()
+        {
+            if (!this._serviceHandle.Start(this))
+            {
+                throw new TopshelfException("The service failed to start (return false).");
+            }
+            _IsRunning = 1;
         }
 
         public void Stop()

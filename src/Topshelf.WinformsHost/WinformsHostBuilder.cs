@@ -9,11 +9,13 @@ namespace Topshelf.WinformsHost
         private readonly HostEnvironment _Environment;
 
         private readonly HostSettings _Settings;
+        private bool _Autostart;
 
-        public WinformsHostBuilder(HostEnvironment environment, HostSettings settings)
+        public WinformsHostBuilder(HostEnvironment environment, HostSettings settings, bool autoStart = true)
         {
             this._Environment = environment;
             this._Settings = settings;
+            _Autostart = autoStart;
         }
 
         public Host Build(ServiceBuilder serviceBuilder)
@@ -30,7 +32,7 @@ namespace Topshelf.WinformsHost
                 return this._Environment.CreateServiceHost(this._Settings, serviceHandle);
             }
             //RunBuilder._log.Debug("Running as a console application, creating the console host.");
-            return new WinformsRunHost(this._Environment, this._Settings, serviceHandle);
+            return new WinformsRunHost(this._Environment, this._Settings, serviceHandle, _Autostart);
         }
 
         public void Match<T>(Action<T> callback) where T : class, HostBuilder

@@ -14,7 +14,7 @@ namespace TestService
         {
             HostFactory.Run(cc =>
             {
-                cc.UseWinformsHost();
+                cc.UseWinformsHost(false);
                 cc.RunAsNetworkService();
                 cc.StartAutomaticallyDelayed();
                 cc.SetDisplayName("Sensaction Sensor Service");
